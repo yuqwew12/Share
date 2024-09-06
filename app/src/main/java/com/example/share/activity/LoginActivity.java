@@ -5,6 +5,7 @@ import static com.example.share.activity.util.AppConfig.LOGIN_URL;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +17,7 @@ import androidx.annotation.NonNull;
 
 import com.example.share.MainActivity;
 import com.example.share.R;
-import com.example.share.activity.Response.LoginResponse;
+import com.example.share.activity.api.ResponseBody;
 import com.example.share.activity.util.AppConfig;
 
 import okhttp3.Headers;
@@ -116,7 +117,9 @@ public class LoginActivity extends BaseActivity {
                 if (dataResponseBody.getCode() == 200) { // 假设 200 是成功的状态码
                     // 登录成功，跳转到 HomeActivity
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("userData", dataResponseBody.getData()); // 传递用户数据
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("userData", dataResponseBody.getData());
+                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish(); // 结束当前活动
                 } else {
@@ -125,33 +128,4 @@ public class LoginActivity extends BaseActivity {
             });
         }
     };
-
-    /**
-     * http响应体的封装协议
-     * @param <T> 泛型
-     */
-    public static class ResponseBody <T> {
-        private int code;
-        private String msg;
-        private T data;
-        public ResponseBody(){}
-        public int getCode() {
-            return code;
-        }
-        public String getMsg() {
-            return msg;
-        }
-        public T getData() {
-            return data;
-        }
-        @NonNull
-        @Override
-        public String toString() {
-            return "ResponseBody{" +
-                    "code=" + code +
-                    ", msg='" + msg + '\'' +
-                    ", data=" + data +
-                    '}';
-        }
-    }
 }

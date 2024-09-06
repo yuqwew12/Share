@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-
+    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
 // 网络请求框架 okhttp3
       implementation ("com.squareup.okhttp3:okhttp:4.9.3")
      //用来解析json串

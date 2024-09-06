@@ -1,5 +1,7 @@
 package com.example.share.activity.Response;
 
+import com.example.share.activity.UserData;
+
 import javax.sql.RowSet;
 
 public class LoginResponse {
@@ -19,32 +21,7 @@ public class LoginResponse {
         return msg;
     }
 
-    public static class UserData {
-        private String appKey;
-        private String avatar;
-        private long createTime;
-        private int id;
-        private String introduce;
-        private long lastUpdateTime;
-        private String password;
-        private int sex;
-        private String username;
 
-        public String getAppKey() {
-            return appKey;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-
-        // Getters and setters
-    }
 
     // Getters and setters
 }
