@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseFragment extends Fragment {
     protected View mRootView;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,9 +39,6 @@ public abstract class BaseFragment extends Fragment {
         initData();
     }
 
-
-
-
     protected abstract int initLayout();
 
     protected abstract void initView();
@@ -52,44 +48,5 @@ public abstract class BaseFragment extends Fragment {
     public void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
-
-    public void showToastSync(String msg) {
-        Looper.prepare();
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-        Looper.loop();
-    }
-
-    public void navigateTo(Class cls) {
-        Intent in = new Intent(getActivity(), cls);
-        startActivity(in);
-    }
-
-    public void navigateToWithBundle(Class cls, Bundle bundle) {
-        Intent in = new Intent(getActivity(), cls);
-        in.putExtras(bundle);
-        startActivity(in);
-    }
-
-    public void navigateToWithFlag(Class cls, int flags) {
-        Intent in = new Intent(getActivity(), cls);
-        in.setFlags(flags);
-        startActivity(in);
-    }
-
-    protected void insertVal(String key, String val) {
-        SharedPreferences sp = getActivity().getSharedPreferences("sp_ttit", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(key, val);
-        editor.commit();
-    }
-    protected String findByKey(String key) {
-        SharedPreferences sp = getActivity().getSharedPreferences("sp_ttit", MODE_PRIVATE);
-        return sp.getString(key, "");
-    }
-    protected void removeByKey(String key) {
-        SharedPreferences sp = getActivity().getSharedPreferences("sp_ttit", MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.remove(key);
-        edit.commit();
-    }
 }
+

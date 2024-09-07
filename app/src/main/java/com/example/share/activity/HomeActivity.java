@@ -53,7 +53,6 @@ public class HomeActivity extends BaseActivity{
     protected void initView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         UserData userData = (UserData) getIntent().getSerializableExtra("userData");
-
         loadFragment(profileFragment, userData);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -84,6 +83,7 @@ public class HomeActivity extends BaseActivity{
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
+
     @Override
     protected void initData() {
         // Optionally, load initial data here

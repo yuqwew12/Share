@@ -40,7 +40,6 @@ public class ProfileFragment extends BaseFragment {
             if (userData != null) {
                 // Set username
                 usernameTextView.setText(userData.getUsername());
-
                 // Load the avatar image from URL using Glide
                 Glide.with(this)
                         .load(userData.getAvatar())  // Assuming userData has a getAvatarUrl() method
@@ -61,7 +60,5 @@ public class ProfileFragment extends BaseFragment {
     @Override
     protected void initData() {
     }
-
-
 }
 

@@ -20,6 +20,7 @@ public class ResponseBody <T> {
     public T getData() {
         return data;
     }
+
     @NonNull
     @Override
     public String toString() {
