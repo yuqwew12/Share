@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -24,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -31,6 +34,8 @@ public class ProfileFragment extends BaseFragment {
     private TextView usernameTextView;
     private ImageView avatarImageView;
     private SharedViewModel sharedViewModel;
+    private Fragment likeFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,23 +46,48 @@ public class ProfileFragment extends BaseFragment {
 
         // 设置用户ID
         sharedViewModel.setUserId(getUserIdFromArguments());
+
+        // 获取传入的数据并设置用户名和头像
         Bundle arguments = getArguments();
         if (arguments != null) {
             UserData userData = (UserData) arguments.getSerializable("userData");
             if (userData != null) {
-                // Set username
+                // 设置用户名
                 usernameTextView.setText(userData.getUsername());
-                // Load the avatar image from URL using Glide
+                // 使用Glide加载头像图片
                 Glide.with(this)
-                        .load(userData.getAvatar())  // Assuming userData has a getAvatarUrl() method
-                        .placeholder(R.drawable.placeholder)  // Optional placeholder image
-                        .error(R.drawable.error)  // Optional error image
+                        .load(userData.getAvatar())
+                        .placeholder(R.drawable.placeholder)
+                        .error(R.drawable.error)
                         .into(avatarImageView);
+
+                // 初始化 LikeFragment
+                likeFragment = new LikeFragment();
             }
         }
+        UserData userData = (UserData) arguments.getSerializable("userData");
+        // 添加按钮并设置点击事件
+        Button button = view.findViewById(R.id.btn_view_liked_shares);
+        button.setOnClickListener(v -> {
+            // 跳转到 LikeFragment
+            loadFragment(likeFragment, userData);
+        });
 
         return view;
     }
+
+    private void loadFragment(Fragment fragment, UserData userData) {
+        if (fragment instanceof LikeFragment) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("userData", userData);
+            fragment.setArguments(bundle);
+        }
+        FragmentManager fragmentManager = requireFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
     private String getUserIdFromArguments() {
         Bundle arguments = getArguments();
         if (arguments != null) {
@@ -68,25 +98,19 @@ public class ProfileFragment extends BaseFragment {
         }
         return null;
     }
-    public String getUserId() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            UserData userData = (UserData) arguments.getSerializable("userData");
-            if (userData != null) {
-                return userData.getId();  // 假设UserData中有getUserId()方法
-            }
-        }
-        return null;  // 或者返回默认值
-    }
+
     @Override
     protected int initLayout() {
         return R.layout.fragment_profile;
     }
+
     @Override
     protected void initView() {
     }
+
     @Override
     protected void initData() {
     }
 }
+
 

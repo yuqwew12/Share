@@ -33,7 +33,7 @@ public class UserData implements Serializable {
     public String getIntroduce() { return introduce; }
     public void setIntroduce(String introduce) { this.introduce = introduce; }
 
-    public String getAvatar() { return avatar; }
+    public String  getAvatar() { return avatar; }
     public void setAvatar(String avatar) { this.avatar = avatar; }
 
     public String getCreateTime() { return createTime; }

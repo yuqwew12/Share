@@ -14,4 +14,8 @@ public class SharedViewModel extends ViewModel {
     public void setUserId(String id) {
         userId.setValue(id);
     }
+
+    public Long getUserId() {
+        return Long.parseLong(userId.getValue());
+    }
 }

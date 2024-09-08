@@ -6,6 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="divider">#e8e7e7</color>
+        <color name="gray">#888888</color> <!-- 添加灰色 -->
     <color name="skin_text_white">#ffffff</color>
     <color name="skin_topbar_bg_color">#344261</color>
 </resources>

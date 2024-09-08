@@ -3,6 +3,8 @@ package com.example.share;
 import com.example.share.activity.ImageInfo;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
+
 import java.util.List;
 public class ShareItem {
     private int current; // 当前页
@@ -163,7 +165,6 @@ public class ShareItem {
     public void setUsername(String username) {
         this.username = username;
     }
-
     public int getSize() {
         return size;
     }
@@ -178,5 +179,9 @@ public class ShareItem {
 
     public void setTotal(long total) {
         this.total = total;
+    }
+
+    public void setPUserId(long pUserId) {
+        this.pUserId = pUserId;
     }
 }

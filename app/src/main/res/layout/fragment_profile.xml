@@ -3,29 +3,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@color/white">
 
+    <!-- Profile Image -->
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/error"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher" />
 
-    <!-- 添加一个按钮用于查看已点赞的图文分享 -->
-
+    <!-- Profile Name -->
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
         android:text="Username"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginBottom="24dp" />
 
+    <!-- Button -->
     <Button
         android:id="@+id/btn_view_liked_shares"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="查看已点赞的图文分享" />
+        android:text="查看已点赞的图文分享"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-medium"
+        android:background="@drawable/shape_big_login_btn"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp" />
+
 </LinearLayout>
