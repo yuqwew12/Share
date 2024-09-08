@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedDispatcher;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.window.OnBackInvokedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import com.example.share.activity.Adapter.ImageInfoListTypeAdapter;
 import com.example.share.activity.Adapter.ShareAdapter;
 import com.example.share.activity.ImageInfo;
 import com.example.share.activity.ShareResponse;
+import com.example.share.activity.SharedViewModel;
 import com.example.share.activity.UserData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -48,8 +51,8 @@ import okhttp3.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-public class ShareFragment extends Fragment {
+import com.example.share.activity.Fragment.ProfileFragment;
+public class ShareFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
     private ShareAdapter shareAdapter;
@@ -57,6 +60,7 @@ public class ShareFragment extends Fragment {
     private OkHttpClient httpClient;
     private Gson gson;
     CheckBox hasLikeCheckBox;
+    private SharedViewModel sharedViewModel;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,9 +83,17 @@ public class ShareFragment extends Fragment {
         gson = gsonBuilder.create();
 
         // 初始化适配器
-        shareAdapter = new ShareAdapter(shareItems);
+       // shareAdapter = new ShareAdapter(shareItems);
         recyclerView.setAdapter(shareAdapter);
 
+        // 初始化适配器
+        shareAdapter = new ShareAdapter(shareItems, new ShareAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(ShareItem item) {
+                // 处理点击事件
+                handleLike(item);
+            }
+        });
         // 加载数据
         loadShareList();
         // 设置按钮点击事件
@@ -92,6 +104,34 @@ public class ShareFragment extends Fragment {
 
     }
 
+    @Override
+    protected int initLayout() {
+        return R.id.recycler_view;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    // 处理点赞逻辑
+    private void handleLike(ShareItem item) {
+        boolean isChecked = !item.isHasLike(); // 反转当前状态
+        if (isChecked) {
+            // 点赞操作
+            item.setHasLike(true); // 更新本地状态
+            updateLikeStatusOnServer(item.getId(), true);
+        } else {
+            // 取消点赞操作
+            item.setHasLike(false); // 更新本地状态
+            updateLikeStatusOnServer(item.getId(), false);
+        }
+    }
     private void updateLikeStatusOnServer(long itemId, boolean isLiked) {
         OkHttpClient client = new OkHttpClient();
 
@@ -100,22 +140,21 @@ public class ShareFragment extends Fragment {
         RequestBody requestBody = RequestBody.create(jsonInputString, MediaType.get("application/json; charset=utf-8"));
 
 
+        // 创建sharedViewModel 实例
 
-        Bundle arguments = getArguments();
-        String userId = null;
-        if (arguments != null) {
-            UserData userData = (UserData) arguments.getSerializable("userData");
-            if (userData != null) {
-                // 获取用户ID
-                userId = userData.getId();
-                System.out.println("User ID: " + userId);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
-                // 这里你可以使用userId进行进一步的操作
-            }
-        }
+        // 观察用户ID变化
+        sharedViewModel.getUserIdLiveData().observe(getViewLifecycleOwner(), userId -> {
+            // 使用用户ID
+            Log.d("ShareFragment", "User ID: " + userId);
+
+        // 打印用户ID
+        Log.d("MainActivity", "User ID: " + userId);
+        System.out.println("User ID: " + userId);
         // 创建请求
         Request request = new Request.Builder()
-                .url(like_URL + shareId + userId)
+                .url(like_URL + "?shareId="+itemId +"&userId="+userId)
                 .post(requestBody)
                 .header("appId", "63460c96c2fb45738d9cdc7deebcdde3")
                 .header("appSecret", "942526cc88c2a0b54411d8472919aa9ffdcfa")
@@ -141,8 +180,9 @@ public class ShareFragment extends Fragment {
                 System.out.println("点赞状态更新成功");
             }
         });
-
+        });
     }
+
 
     private void loadShareList() {
         // 构建请求
@@ -198,7 +238,7 @@ public class ShareFragment extends Fragment {
         }
     }
 
-    private void showToast(String message) {
+    public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -12,6 +12,8 @@
         android:layout_gravity="center_horizontal"
         android:src="@mipmap/ic_launcher" />
 
+    <!-- 添加一个按钮用于查看已点赞的图文分享 -->
+
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
@@ -19,4 +21,11 @@
         android:layout_marginTop="16dp"
         android:text="Username"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_view_liked_shares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="查看已点赞的图文分享" />
 </LinearLayout>
