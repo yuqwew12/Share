@@ -102,11 +102,15 @@ public class MoreFragment extends Fragment {
                                 ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), selectedImage);
                                 Bitmap bitmap = ImageDecoder.decodeBitmap(source);
                                 selectedBitmaps.add(bitmap);
+                                // 设置图片到 ImageView
+                                ivSelectedImage.setImageBitmap(bitmap);
                                 Log.d("MoreFragment", "Image added to selectedBitmaps");
                             } else {
                                 // 兼容旧版本
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectedImage);
-                                selectedBitmaps.add(bitmap);
+
+                                // 设置图片到 ImageView
+                                ivSelectedImage.setImageBitmap(bitmap);selectedBitmaps.add(bitmap);
                                 Log.d("MoreFragment", "Image added to selectedBitmaps");
                             }
                         } catch (IOException e) {
