@@ -21,10 +21,15 @@ import java.util.List;
 
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHolder> {
 
-    private List<ShareItem> shareItems;
+    private static List<ShareItem> shareItems;
+    private static OnItemClickListener listener;
 
-    public ShareAdapter(List<ShareItem> shareItems) {
+    public interface OnItemClickListener {
+        void onItemClick(ShareItem item);
+    }
+    public ShareAdapter(List<ShareItem> shareItems, OnItemClickListener listener) {
         this.shareItems = shareItems;
+        this.listener = listener;
     }
 
     @NonNull
@@ -77,6 +82,21 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             hasLikeButton = itemView.findViewById(R.id.hasLike);
             hasFocusButton = itemView.findViewById(R.id.hasFocus);
             imageView = itemView.findViewById(R.id.image);
+            hasLikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // 获取当前项在RecyclerView中的位置
+                    int position = getAdapterPosition();
+                    // 检查位置是否有效
+                    if (position != RecyclerView.NO_POSITION) {
+                        // 通过位置获取对应的ShareItem对象
+                        ShareItem item = shareItems.get(position);
+                        // 调用监听器的onItemClick方法，传递ShareItem对象给监听器处理
+                        listener.onItemClick(item);
+                    }
+                }
+
+            });
         }
 
         /**
