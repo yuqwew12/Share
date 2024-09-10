@@ -50,7 +50,7 @@ public class SaveFragment extends BaseFragment{
     }
     @Override
     protected void initView() {
-        listView = mRootView.findViewById(R.id.like_listview);
+        listView = mRootView.findViewById(R.id.save_listview);
             fetchSavedPhotos();
     }
     @Override

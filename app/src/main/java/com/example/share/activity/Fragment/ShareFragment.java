@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -246,22 +247,47 @@ public class ShareFragment extends BaseFragment {
     private void parseResponse(String responseBody) {
         try {
             ShareResponse shareResponse = gson.fromJson(responseBody, new TypeToken<ShareResponse>() {}.getType());
+
             if (shareResponse.getCode() == 200) {
                 List<ShareItem> items = shareResponse.getData().getRecords();
                 shareItems.clear();
                 shareItems.addAll(items);
-                getActivity().runOnUiThread(() -> {
-                    shareAdapter.notifyDataSetChanged();
-                });
+
+                // 确保 getActivity() 不为 null
+                FragmentActivity activity = getActivity();
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        shareAdapter.notifyDataSetChanged();
+                    });
+                } else {
+                    Log.e("ShareFragment", "Activity is null, cannot update UI");
+                }
             } else {
-                getActivity().runOnUiThread(() -> showToast("获取数据失败: " + shareResponse.getMsg()));
+                // 确保 getActivity() 不为 null
+                FragmentActivity activity = getActivity();
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        showToast("获取数据失败: " + shareResponse.getMsg());
+                    });
+                } else {
+                    Log.e("ShareFragment", "Activity is null, cannot update UI");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
 
-            getActivity().runOnUiThread(() -> showToast("解析响应失败: " + e.getMessage()));
+            // 确保 getActivity() 不为 null
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(() -> {
+                    showToast("解析响应失败: " + e.getMessage());
+                });
+            } else {
+                Log.e("ShareFragment", "Activity is null, cannot update UI");
+            }
         }
     }
+
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
