@@ -1,6 +1,7 @@
 package com.example.share.activity.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class MysaveAdapter extends ArrayAdapter<SaveFragment.SaveResponse.SaveDa
         // 加载图像
         if (record.getImageUrlList() != null && record.getImageUrlList().length > 0) {
             String imageUrl = record.getImageUrlList()[0]; // 直接获取 URL 字符串
+            Log.d("Image URL", imageUrl);
             Glide.with(getContext())
                     .load(imageUrl)
                     .placeholder(R.drawable.bbb) // 加载占位图
