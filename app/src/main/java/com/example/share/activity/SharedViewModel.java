@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class SharedViewModel extends ViewModel {
     private MutableLiveData<String> userId = new MutableLiveData<>();
 
-    public LiveData<String> getUserIdLiveData() {
+     public LiveData<String> getUserIdLiveData() {
         return userId;
     }
 

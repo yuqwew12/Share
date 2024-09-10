@@ -1,8 +1,6 @@
 package com.example.share.activity.Fragment;
 
 import static android.app.Activity.RESULT_OK;
-import static android.app.PendingIntent.getActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,8 +26,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-//import com.example.share.Manifest;
 import com.example.share.R;
 import com.example.share.activity.SharedViewModel;
 
@@ -38,18 +34,13 @@ import android.Manifest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+
 public class MoreFragment extends Fragment {
 
     private EditText etTitle;
@@ -58,8 +49,6 @@ public class MoreFragment extends Fragment {
     private Button btnSelectImage;
     private ImageView ivSelectedImage;
     private OkHttpClient httpClient;
-    private Uri selectedImageUri;
-    private Bitmap selectedBitmap;
     private SharedViewModel sharedViewModel;
 
     private static final int REQUEST_IMAGE_PICK = 1;

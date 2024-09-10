@@ -1,32 +1,15 @@
 package com.example.share.activity.Fragment;
 
-import static android.app.PendingIntent.getActivity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.share.R;
 import com.example.share.activity.Adapter.MyAdapter;
-import com.example.share.activity.BaseActivity;
-import com.example.share.activity.ImageInfo;
+import com.example.share.activity.Adapter.MysaveAdapter;
 import com.example.share.activity.SharedViewModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -48,32 +31,31 @@ import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LikeFragment extends BaseFragment {
+public class SaveFragment extends BaseFragment{
 
     private ListView listView;
-    private List<LikeResponse.LikeData.Record> likedPhotos = new ArrayList<>();
+    private List<SaveFragment.SaveResponse.SaveData.Record> savedPhotos = new ArrayList<>();
     private SharedViewModel sharedViewModel;
     private OkHttpClient httpClient = new OkHttpClient();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private static final String TAG = "LikeFragment";
-    private static final String BASE_API_URL = "https://api-store.openguet.cn/api/member/photo/like";
+    private static final String TAG = "SaveFragment";
+    private static final String BASE_API_URL = "https://api-store.openguet.cn/api/member/photo/share/save";
     private static final String APP_ID = "63460c96c2fb45738d9cdc7deebcdde3";
     private static final String APP_SECRET = "942526cc88c2a0b54411d8472919aa9ffdcfa";
     @Override
     protected int initLayout() {
-        return R.layout.fragment_like;
+        return R.layout.fragment_save;
     }
     @Override
     protected void initView() {
         listView = mRootView.findViewById(R.id.like_listview);
-        fetchLikedPhotos();
+            fetchSavedPhotos();
     }
     @Override
     protected void initData() {}
-    private void fetchLikedPhotos() {
+    private void fetchSavedPhotos() {
         int current = 1; // 当前页
         int size = 100; // 页面大小
         if (sharedViewModel == null) {
@@ -84,7 +66,7 @@ public class LikeFragment extends BaseFragment {
                 handleErrorResponse("User ID is empty or null");
                 return;
             }
-            Log.d("likeFragment", "User ID: " + userId);
+            Log.d("SaveFragment", "User ID: " + userId);
 
             // 构建完整的请求 URL
             String fullUrl = BASE_API_URL + "?current=" + current + "&size=" + size + "&userId=" + userId;
@@ -122,14 +104,14 @@ public class LikeFragment extends BaseFragment {
     }
     private void handleResponse(String responseJson) throws Exception {
         Gson gson = new Gson();
-        Type type = new TypeToken<LikeResponse>() {}.getType();
+        Type type = new TypeToken<SaveFragment.SaveResponse>() {}.getType();
 
         try {
-            LikeResponse likeResponse = gson.fromJson(responseJson, type);
+            SaveFragment.SaveResponse saveResponse = gson.fromJson(responseJson, type);
 
-            if (likeResponse != null && likeResponse.getData() != null) {
-                likedPhotos.clear();
-                likedPhotos.addAll(Arrays.asList(likeResponse.getData().getRecords()));
+            if (saveResponse != null && saveResponse.getData() != null) {
+                savedPhotos.clear();
+                savedPhotos.addAll(Arrays.asList(saveResponse.getData().getRecords()));
                 new Handler(Looper.getMainLooper()).post(this::updateUI);
             } else {
                 handleErrorResponse(responseJson);
@@ -158,7 +140,7 @@ public class LikeFragment extends BaseFragment {
                     JSONArray recordsArray = dataObject.getJSONArray("records");
                     for (int i = 0; i < recordsArray.length(); i++) {
                         JSONObject recordObject = recordsArray.getJSONObject(i);
-                        LikeResponse.LikeData.Record record = new LikeResponse.LikeData.Record();
+                        SaveFragment.SaveResponse.SaveData.Record record = new SaveFragment.SaveResponse.SaveData.Record();
                         if (recordObject.has("title")) {
                             record.setTitle(recordObject.getString("title"));
                         }
@@ -197,7 +179,7 @@ public class LikeFragment extends BaseFragment {
                             }
                         }
 
-                        likedPhotos.add(record);
+                        savedPhotos.add(record);
                     }
                     new Handler(Looper.getMainLooper()).post(this::updateUI);
                 }
@@ -208,7 +190,7 @@ public class LikeFragment extends BaseFragment {
         }
     }
     private void updateUI() {
-        MyAdapter adapter = new MyAdapter(requireContext(), likedPhotos);
+        MysaveAdapter adapter = new MysaveAdapter(requireContext(), savedPhotos);
         listView.setAdapter(adapter);
     }
     private void handleErrorResponse(String errorMessage) {
@@ -220,10 +202,10 @@ public class LikeFragment extends BaseFragment {
         new Handler(Looper.getMainLooper()).post(() -> showToast("网络请求失败: " + t.getMessage()));
     }
 
-    public static class LikeResponse {
+    public static class SaveResponse {
         private String msg;
         private int code;
-        private LikeData data;
+        private SaveFragment.SaveResponse.SaveData data;
 
         public String getMsg() {
             return msg;
@@ -241,19 +223,19 @@ public class LikeFragment extends BaseFragment {
             this.code = code;
         }
 
-        public LikeData getData() {
+        public SaveFragment.SaveResponse.SaveData getData() {
             return data;
         }
 
-        public void setData(LikeData data) {
+        public void setData(SaveFragment.SaveResponse.SaveData data) {
             this.data = data;
         }
 
-        public static class LikeData {
+        public static class SaveData {
             private int current;
             private int size;
             private int total;
-            private Record[] records;
+            private SaveFragment.SaveResponse.SaveData.Record[] records;
 
             public int getCurrent() {
                 return current;
@@ -279,11 +261,11 @@ public class LikeFragment extends BaseFragment {
                 this.total = total;
             }
 
-            public Record[] getRecords() {
+            public SaveFragment.SaveResponse.SaveData.Record[] getRecords() {
                 return records;
             }
 
-            public void setRecords(Record[] records) {
+            public void setRecords(SaveFragment.SaveResponse.SaveData.Record[] records) {
                 this.records = records;
             }
 
@@ -427,5 +409,3 @@ public class LikeFragment extends BaseFragment {
         }
     }
 }
-
-

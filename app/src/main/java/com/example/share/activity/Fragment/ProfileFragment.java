@@ -2,6 +2,7 @@ package com.example.share.activity.Fragment;
 
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class ProfileFragment extends BaseFragment {
     private ImageView avatarImageView;
     private SharedViewModel sharedViewModel;
     private Fragment likeFragment;
+    private Fragment saveFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +51,7 @@ public class ProfileFragment extends BaseFragment {
 
         // 获取传入的数据并设置用户名和头像
         Bundle arguments = getArguments();
+
         if (arguments != null) {
             UserData userData = (UserData) arguments.getSerializable("userData");
             if (userData != null) {
@@ -63,6 +66,7 @@ public class ProfileFragment extends BaseFragment {
 
                 // 初始化 LikeFragment
                 likeFragment = new LikeFragment();
+                saveFragment= new SaveFragment();
             }
         }
         UserData userData = (UserData) arguments.getSerializable("userData");
@@ -71,6 +75,13 @@ public class ProfileFragment extends BaseFragment {
         button.setOnClickListener(v -> {
             // 跳转到 LikeFragment
             loadFragment(likeFragment, userData);
+        });
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        Button button2 = view.findViewById(R.id.btn_view_saved_shares);
+        button2.setOnClickListener(v -> {
+            // 跳转到 SaveFragment
+
+            loadFragment(saveFragment, userData);
         });
 
         return view;

@@ -28,12 +28,25 @@
         android:fontFamily="sans-serif-medium"
         android:layout_marginBottom="24dp" />
 
-    <!-- Button -->
+    <!-- Button for viewing liked shares -->
     <Button
         android:id="@+id/btn_view_liked_shares"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="查看已点赞的图文分享"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-medium"
+        android:background="@drawable/shape_big_login_btn"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp" />
+
+    <!-- New Button for viewing saved shares -->
+    <Button
+        android:id="@+id/btn_view_saved_shares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看已保存的图文分享"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:fontFamily="sans-serif-medium"

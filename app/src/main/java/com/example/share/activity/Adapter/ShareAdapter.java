@@ -22,14 +22,21 @@ import java.util.List;
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHolder> {
 
     private static List<ShareItem> shareItems;
-    private static OnItemClickListener listener;
+    private static OnItemClickListener onItemClickListener;
+    private static OnSaveClickListener onSaveClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(ShareItem item);
     }
-    public ShareAdapter(List<ShareItem> shareItems, OnItemClickListener listener) {
+
+    public interface OnSaveClickListener {
+        void onSaveClick(ShareItem item);
+    }
+
+    public ShareAdapter(List<ShareItem> shareItems, OnItemClickListener onItemClickListener, OnSaveClickListener onSaveClickListener) {
         this.shareItems = shareItems;
-        this.listener = listener;
+        this.onItemClickListener = onItemClickListener;
+        this.onSaveClickListener = onSaveClickListener;
     }
 
     @NonNull
@@ -41,22 +48,16 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ShareViewHolder holder, int position) {
-        // 根据当前位置获取对应的分享项
         ShareItem item = shareItems.get(position);
-        // 将分享项绑定到指定的视图持有者上
         holder.bind(item);
     }
+
     @Override
     public int getItemCount() {
-        // 返回共享项列表中的项数
         return shareItems.size();
     }
-    /**
-     * ShareViewHolder类用于在RecyclerView中显示分享条目.
-     * 它持有一组用于显示分享信息的视图，如标题、内容、用户名等.
-     */
+
     static class ShareViewHolder extends RecyclerView.ViewHolder {
-        // 视图变量初始化
         TextView titleTextView;
         TextView contentTextView;
         TextView usernameTextView;
@@ -64,68 +65,58 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         Button hasCollectButton;
         Button hasLikeButton;
         Button hasFocusButton;
+        Button saveButton;
         ImageView imageView;
 
-        /**
-         * 构造函数，用于初始化ViewHolder中的视图.
-         *
-         * @param itemView 父视图，用于查找子视图.
-         */
         public ShareViewHolder(@NonNull View itemView) {
             super(itemView);
-            // 初始化视图
             titleTextView = itemView.findViewById(R.id.title);
             contentTextView = itemView.findViewById(R.id.content);
             usernameTextView = itemView.findViewById(R.id.username);
             createTimeTextView = itemView.findViewById(R.id.createTime);
-            hasCollectButton = itemView.findViewById(R.id.hasCollect);
+          //  hasCollectButton = itemView.findViewById(R.id.hasCollect);
             hasLikeButton = itemView.findViewById(R.id.hasLike);
             hasFocusButton = itemView.findViewById(R.id.hasFocus);
+            saveButton = itemView.findViewById(R.id.hasCollect); // 添加保存按钮
             imageView = itemView.findViewById(R.id.image);
+
             hasLikeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 获取当前项在RecyclerView中的位置
                     int position = getAdapterPosition();
-                    // 检查位置是否有效
                     if (position != RecyclerView.NO_POSITION) {
-                        // 通过位置获取对应的ShareItem对象
                         ShareItem item = shareItems.get(position);
-                        // 调用监听器的onItemClick方法，传递ShareItem对象给监听器处理
-                        listener.onItemClick(item);
+                        onItemClickListener.onItemClick(item);
                     }
                 }
+            });
 
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        ShareItem item = shareItems.get(position);
+                        onSaveClickListener.onSaveClick(item);
+                    }
+                }
             });
         }
 
-        /**
-         * 将ViewHolder绑定到特定的分享条目.
-         * 此方法负责将条目数据填充到ViewHolder的视图中.
-         *
-         * @param item 要绑定的分享条目.
-         */
         public void bind(ShareItem item) {
-            // 设置文本内容
             titleTextView.setText(item.getTitle());
             contentTextView.setText(item.getContent());
             usernameTextView.setText(item.getUsername());
             createTimeTextView.setText(String.valueOf(item.getCreateTime()));
 
-
-
-            // 加载图片
             if (item.getImageUrlList() != null && !item.getImageUrlList().isEmpty()) {
                 String imageUrl = item.getImageUrlList().get(0);
                 Glide.with(itemView.getContext())
                         .load(imageUrl)
                         .into(imageView);
             } else {
-                // 如果没有图片，可以设置默认图片或者不显示
-                imageView.setImageResource(R.drawable.ic_launcher_foreground); // 假设 R.drawable.default_image 是默认图片资源
+                imageView.setImageResource(R.drawable.ic_launcher_foreground); // 默认图片资源
             }
         }
     }
-
-
 }
