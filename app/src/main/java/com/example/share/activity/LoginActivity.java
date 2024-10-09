@@ -72,8 +72,8 @@ public class LoginActivity extends BaseActivity {
         new Thread(() -> {
             // 请求头
             Headers headers = new Headers.Builder()
-                    .add("appId", "63460c96c2fb45738d9cdc7deebcdde3")
-                    .add("appSecret", "942526cc88c2a0b54411d8472919aa9ffdcfa")
+                    .add("appId", "2aad879445714c6c85afd1df731be32d")
+                    .add("appSecret", "32545829d0c295593441ea99a7eec614c7b8c")
                     .add("Accept", "application/json, text/plain, */*")
                     .build();
 

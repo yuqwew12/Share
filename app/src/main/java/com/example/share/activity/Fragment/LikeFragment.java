@@ -60,8 +60,8 @@ public class LikeFragment extends BaseFragment {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final String TAG = "LikeFragment";
     private static final String BASE_API_URL = "https://api-store.openguet.cn/api/member/photo/like";
-    private static final String APP_ID = "63460c96c2fb45738d9cdc7deebcdde3";
-    private static final String APP_SECRET = "942526cc88c2a0b54411d8472919aa9ffdcfa";
+    private static final String APP_ID = "2aad879445714c6c85afd1df731be32d";
+    private static final String APP_SECRET = "32545829d0c295593441ea99a7eec614c7b8c";
     @Override
     protected int initLayout() {
         return R.layout.fragment_like;

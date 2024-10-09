@@ -112,8 +112,8 @@ public class ShareFragment extends BaseFragment {
             Request request = new Request.Builder()
                     .url("https://api-store.openguet.cn/api/member/photo/share/save")
                     .post(requestBody)
-                    .header("appId", "63460c96c2fb45738d9cdc7deebcdde3")
-                    .header("appSecret", "942526cc88c2a0b54411d8472919aa9ffdcfa")
+                    .header("appId", "2aad879445714c6c85afd1df731be32d")
+                    .header("appSecret", "32545829d0c295593441ea99a7eec614c7b8c")
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Accept", "application/json")
                     .build();
@@ -191,8 +191,8 @@ public class ShareFragment extends BaseFragment {
         Request request = new Request.Builder()
                 .url(like_URL + "?shareId="+itemId +"&userId="+userId)
                 .post(requestBody)
-                .header("appId", "63460c96c2fb45738d9cdc7deebcdde3")
-                .header("appSecret", "942526cc88c2a0b54411d8472919aa9ffdcfa")
+                .header("appId", "2aad879445714c6c85afd1df731be32d")
+                .header("appSecret", "32545829d0c295593441ea99a7eec614c7b8c")
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
                 .build();
@@ -221,8 +221,8 @@ public class ShareFragment extends BaseFragment {
         // 构建请求
         Request request = new Request.Builder()
                 .url("https://api-store.openguet.cn/api/member/photo/share?current=1&size=10&userId=1")
-                .header("appId", "63460c96c2fb45738d9cdc7deebcdde3")
-                .header("appSecret", "942526cc88c2a0b54411d8472919aa9ffdcfa")
+                .header("appId", "2aad879445714c6c85afd1df731be32d")
+                .header("appSecret", "32545829d0c295593441ea99a7eec614c7b8c")
                 .get()
                 .build();
         // 发送请求
