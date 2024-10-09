@@ -4,11 +4,13 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +32,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-
 public class ProfileFragment extends BaseFragment {
     private TextView usernameTextView;
     private ImageView avatarImageView;
     private SharedViewModel sharedViewModel;
-    private Fragment likeFragment;
-    private Fragment saveFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,36 +63,46 @@ public class ProfileFragment extends BaseFragment {
                         .error(R.drawable.error)
                         .into(avatarImageView);
 
-                // 初始化 LikeFragment
-                likeFragment = new LikeFragment();
-                saveFragment= new SaveFragment();
+                // 初始化 LikeFragment 和 SaveFragment
+                LikeFragment likeFragment = new LikeFragment();
+                SaveFragment saveFragment = new SaveFragment();
+
+                // 设置点击事件
+                LinearLayout viewLikedShares = view.findViewById(R.id.view_liked_shares);
+                viewLikedShares.setOnClickListener(v -> {
+                    // 跳转到 LikeFragment
+                    loadFragment(likeFragment, userData);
+                });
+
+                LinearLayout viewSavedShares = view.findViewById(R.id.view_saved_shares);
+                viewSavedShares.setOnClickListener(v -> {
+                    // 跳转到 SaveFragment
+                    loadFragment(saveFragment, userData);
+                });
             }
         }
-        UserData userData = (UserData) arguments.getSerializable("userData");
-        // 添加按钮并设置点击事件
-        Button button = view.findViewById(R.id.btn_view_liked_shares);
-        button.setOnClickListener(v -> {
-            // 跳转到 LikeFragment
-            loadFragment(likeFragment, userData);
-        });
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
-        Button button2 = view.findViewById(R.id.btn_view_saved_shares);
-        button2.setOnClickListener(v -> {
-            // 跳转到 SaveFragment
-
-            loadFragment(saveFragment, userData);
-        });
 
         return view;
     }
 
     private void loadFragment(Fragment fragment, UserData userData) {
-        if (fragment instanceof LikeFragment) {
+        if (fragment == null) {
+            Log.e("ProfileFragment", "Fragment is null");
+            return;
+        }
+
+        if (userData != null && fragment instanceof LikeFragment) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("userData", userData);
             fragment.setArguments(bundle);
         }
+
         FragmentManager fragmentManager = requireFragmentManager();
+        if (fragmentManager == null) {
+            Log.e("ProfileFragment", "FragmentManager is null");
+            return;
+        }
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
@@ -122,5 +131,3 @@ public class ProfileFragment extends BaseFragment {
     protected void initData() {
     }
 }
-
-

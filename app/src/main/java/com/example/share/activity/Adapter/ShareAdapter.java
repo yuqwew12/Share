@@ -73,7 +73,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             titleTextView = itemView.findViewById(R.id.title);
             contentTextView = itemView.findViewById(R.id.content);
             usernameTextView = itemView.findViewById(R.id.username);
-            createTimeTextView = itemView.findViewById(R.id.createTime);
+          //  createTimeTextView = itemView.findViewById(R.id.createTime);
           //  hasCollectButton = itemView.findViewById(R.id.hasCollect);
             hasLikeButton = itemView.findViewById(R.id.hasLike);
             hasFocusButton = itemView.findViewById(R.id.hasFocus);
@@ -107,7 +107,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             titleTextView.setText(item.getTitle());
             contentTextView.setText(item.getContent());
             usernameTextView.setText(item.getUsername());
-            createTimeTextView.setText(String.valueOf(item.getCreateTime()));
+           // createTimeTextView.setText(String.valueOf(item.getCreateTime()));
 
             if (item.getImageUrlList() != null && !item.getImageUrlList().isEmpty()) {
                 String imageUrl = item.getImageUrlList().get(0);

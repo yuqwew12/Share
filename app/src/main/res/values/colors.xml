@@ -9,4 +9,8 @@
         <color name="gray">#888888</color> <!-- 添加灰色 -->
     <color name="skin_text_white">#ffffff</color>
     <color name="skin_topbar_bg_color">#344261</color>
+
+    <color name="dark_gray">#E0E0E0</color>
+    <color name="light_gray">#F5F5F5</color> <!-- 新增的颜色资源 -->
+
 </resources>
