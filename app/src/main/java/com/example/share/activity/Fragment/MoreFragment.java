@@ -66,7 +66,6 @@ public class MoreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         etTitle = view.findViewById(R.id.et_title);
         etContent = view.findViewById(R.id.et_content);
         btnPublish = view.findViewById(R.id.btn_publish);

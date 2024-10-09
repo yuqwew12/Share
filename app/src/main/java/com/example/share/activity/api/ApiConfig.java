@@ -5,6 +5,4 @@ public class ApiConfig {
 
     public static final String YOUR_APP_SECRET = "942526cc88c2a0b54411d8472919aa9ffdcfa";
     public static final String like_URL = "https://api-store.openguet.cn/api/member/photo/like";
-
-
 }

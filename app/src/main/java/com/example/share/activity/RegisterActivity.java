@@ -76,6 +76,7 @@ public class RegisterActivity extends BaseActivity{
                         if (!response.isSuccessful()) {
                             showToast("Registration failed: " + response.message());
                         } else {
+                            showToast( response.message());
                             showToast("Registration successful");
                         }
                     }
